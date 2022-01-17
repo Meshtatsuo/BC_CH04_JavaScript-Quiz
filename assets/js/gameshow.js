@@ -10,3 +10,16 @@ let question = {
 
 // list of questions
 let questionList = [];
+
+// FUNCTIONS
+
+let beginQuiz = function () {
+  removeAllButtons();
+};
+
+let removeAllButtons = function () {
+  // Remove all buttons from ordered list
+};
+// On load execute
+document.querySelector(".answer-button").click(beginQuiz());
+console.log("hello");

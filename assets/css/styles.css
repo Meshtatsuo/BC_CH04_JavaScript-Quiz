@@ -24,7 +24,6 @@ header {
 
 header h2 {
   margin: 0 5%;
-  flex: 1 1 25%;
 }
 
 header h1 {
@@ -32,8 +31,21 @@ header h1 {
   flex: 1 1 25%;
 }
 
+header a {
+  flex: 1 1 25%;
+  margin: 0 5%;
+  text-decoration: none;
+  text-align: left;
+  color: black;
+}
+
+header a:hover {
+  color: #9b40c5;
+}
+
 #timer {
   text-align: right;
+  flex: 1 1 25%;
 }
 
 /* main question area stylings */
@@ -62,6 +74,14 @@ header h1 {
 
 #question-area button:hover {
   background-color: #bd60e7;
+}
+
+#question-area button:active {
+  background-color: #9b40c5;
+}
+
+#feedback {
+  padding-top: 25px;
 }
 
 #question-area button {
