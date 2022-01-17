@@ -1,0 +1,95 @@
+/* general stylings */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+section {
+  flex: 1 1 100%;
+}
+
+/* Header stylings */
+header {
+  padding: 1% 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: space-between;
+}
+
+header h2 {
+  margin: 0 5%;
+  flex: 1 1 25%;
+}
+
+header h1 {
+  text-align: center;
+  flex: 1 1 25%;
+}
+
+#timer {
+  text-align: right;
+}
+
+/* main question area stylings */
+#question-area {
+  margin: 0 auto;
+  padding: 10%;
+  text-align: center;
+}
+
+#question-area h2 {
+  font-size: 36px;
+  margin: 0 auto;
+  width: 50%;
+}
+
+#question-area ol {
+  list-style-type: none;
+}
+
+#question-area button {
+  background-color: #351c75;
+  width: 150px;
+  height: 40px;
+  border-radius: 10px;
+}
+
+#question-area button:hover {
+  background-color: #bd60e7;
+}
+
+#question-area button {
+  text-decoration: none;
+  border: none;
+}
+
+#answers {
+  width: 50%;
+  margin: 0 auto;
+  padding-left: 10%;
+  padding-top: 3%;
+  text-align: left;
+}
+
+.answer-button {
+  text-decoration: none;
+  margin: 5px 0;
+}
+
+.answer-button button {
+  color: white;
+  font-size: 14px;
+}
+
+/* Footer stylings */
+footer {
+  padding: 1% 0;
+  flex: 1 1 100%;
+  text-align: center;
+}
