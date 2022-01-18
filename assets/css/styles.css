@@ -95,6 +95,8 @@ header a:hover {
   padding-left: 10%;
   padding-top: 3%;
   text-align: left;
+
+  height: 300px;
 }
 
 .answer-button {
