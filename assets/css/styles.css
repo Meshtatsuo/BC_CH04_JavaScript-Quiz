@@ -7,6 +7,9 @@
 body {
   display: flex;
   flex-wrap: wrap;
+  font-family: "Kumbh Sans", sans-serif;
+  font-family: "Open Sans", sans-serif;
+  font-family: "Quattrocento", serif;
 }
 
 section {
@@ -53,8 +56,13 @@ header a:hover {
   margin: 0 auto;
   padding: 10%;
   text-align: center;
+  display: flex;
+  flex-wrap: wrap;
 }
 
+#question-text {
+  flex: 1 1 100%;
+}
 #question-area h2 {
   font-size: 36px;
   margin: 0 auto;
@@ -67,8 +75,6 @@ header a:hover {
 
 #question-area button {
   background-color: #351c75;
-  width: 150px;
-  height: 40px;
   border-radius: 10px;
 }
 
@@ -80,23 +86,27 @@ header a:hover {
   background-color: #9b40c5;
 }
 
-#feedback {
-  padding-top: 25px;
-}
-
 #question-area button {
   text-decoration: none;
   border: none;
+  min-width: 150px;
+  flex: 1 1 100%;
+  padding: 2%;
 }
 
 #answers {
-  width: 50%;
-  margin: 0 auto;
-  padding-left: 10%;
-  padding-top: 3%;
+  flex: 1 1 100%;
+  padding: 5% 25% 0 25%;
   text-align: left;
-
   height: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+}
+
+#answers li {
+  flex: 1 1 100%;
 }
 
 .answer-button {
@@ -107,6 +117,17 @@ header a:hover {
 .answer-button button {
   color: white;
   font-size: 14px;
+}
+
+#feedback {
+  flex: 0 0 100%;
+  padding-top: 25px;
+  text-align: left;
+  color: #aaaaaa;
+}
+
+#feedback-text {
+  padding-top: 25px;
 }
 
 /* Footer stylings */

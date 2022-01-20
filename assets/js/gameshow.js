@@ -1,17 +1,17 @@
 // Global variable
-let listEl = document.querySelector("#answers");
+const listEl = document.querySelector("#answers");
 
-let currentQuestion = 0;
-let timer = 0;
-let startingTime = 10;
-let score = 0;
+var currentQuestion = 0;
+var timer = 0;
+const startingTime = 120;
+var score = 0;
 // used to clear the timer interval
-let timerInterval;
+var timerInterval;
 // question object contains question, all answers, and index of correct answer
 
-let answerReward = 0;
-let answerPenalty = -10;
-let question = {
+const answerReward = 0;
+const answerPenalty = -10;
+const question = {
   qText: "",
   qAns1: "",
   qAns2: "",
@@ -21,44 +21,44 @@ let question = {
 };
 
 // list of questions
-let questionList = [
+const questionList = [
   {
     // Q1
-    qText: "Test Question One",
-    qAns1: "Correct Answer",
-    qAns2: "incorrect Answer",
-    qAns3: "incorrect Answer",
-    qAns4: "incorrect Answer",
-    correctAns: 1,
+    qText: "What are the three phases of event propagation?",
+    qAns1: "Target > Capturing > Bubbling",
+    qAns2: "Bubbling > Target > Capturing",
+    qAns3: "Target > Bubbling > Capturing",
+    qAns4: "Capturing > Target > Bubbling",
+    correctAns: 4,
   },
   {
     // Q2
-    qText: "Test Question Two",
-    qAns1: "incorrect Answer",
-    qAns2: "Correct Answer",
-    qAns3: "incorrect Answer",
-    qAns4: "incorrect Answer",
-    correctAns: 2,
+    qText: "Which answer is a correct example of an anonymous function?",
+    qAns1: "addEventListener('click', function () { console.log('Hello'); };",
+    qAns2: "var myFuction = function() { console.log('hello') };",
+    qAns3: "myFunction() { console.log('hello') };",
+    qAns4: "var myFunction() { console.log('hello') };",
+    correctAns: 1,
   },
 ];
 
 // FUNCTIONS
 
-let beginQuiz = function () {
+var beginQuiz = function () {
   removeAllButtons();
   currentQuestion = 0;
   initalizeTimer(startingTime);
   createNextQuestion(currentQuestion);
 };
 
-let initalizeTimer = function (startingTime) {
+var initalizeTimer = function (startingTime) {
   let timerEl = document.querySelector("#timer");
   timer = startingTime;
   timerEl.textContent = startingTime;
   timerInterval = setInterval(updateTimer, 1000);
 };
 
-let updateTimer = function () {
+var updateTimer = function () {
   timer -= 1;
   let timerEl = document.querySelector("#timer");
   if (timer <= 0) {
@@ -70,7 +70,7 @@ let updateTimer = function () {
   }
 };
 
-let removeAllButtons = function () {
+var removeAllButtons = function () {
   // Remove all buttons from ordered list
   while (document.querySelector(".answer-button")) {
     let listEl = document.querySelector("#answers");
@@ -79,7 +79,7 @@ let removeAllButtons = function () {
   }
 };
 
-let createNextQuestion = function (index) {
+var createNextQuestion = function (index) {
   // create next question elements based on index
   // Set values to vars for easy creation
   let qText = questionList[index].qText;
@@ -96,7 +96,7 @@ let createNextQuestion = function (index) {
   }
 };
 
-let createAnswerButton = function (answer, index) {
+var createAnswerButton = function (answer, index) {
   // Creates list item, button, and assigns appropriate class, ID,
   // and text content values for each button
   let newAnsEl = document.createElement("li");
@@ -110,7 +110,7 @@ let createAnswerButton = function (answer, index) {
   listEl.appendChild(newAnsEl);
 };
 
-let createBeginButton = function () {
+var createBeginButton = function () {
   // Creates list item, button, and assigns appropriate class, ID,
   // and text content values for each button
   let newAnsEl = document.createElement("li");
@@ -124,12 +124,12 @@ let createBeginButton = function () {
   listEl.appendChild(newAnsEl);
 };
 
-let evaluateAnswer = function (ansIndex) {
+var evaluateAnswer = function (ansIndex) {
   if (ansIndex === questionList[currentQuestion].correctAns) {
-    let response = document.querySelector("#feedback");
+    let response = document.querySelector("#feedback-text");
     response.textContent = "Correct!";
   } else {
-    let response = document.querySelector("#feedback");
+    let response = document.querySelector("#feedback-text");
     response.textContent = "Wrong!";
     penalizePlayer();
   }
@@ -143,8 +143,7 @@ let evaluateAnswer = function (ansIndex) {
   }
 };
 
-let penalizePlayer = function () {
-  debugger;
+var penalizePlayer = function () {
   timer += answerPenalty;
   let timerTextEl = document.querySelector("#timer");
   timerTextEl.textContent = timer;
@@ -155,13 +154,13 @@ let penalizePlayer = function () {
   }
 };
 
-let computeResults = function () {
+var computeResults = function () {
   // calculate results
   score = timer;
   return score;
 };
 
-let displayResults = function (hasScore) {
+var displayResults = function (hasScore) {
   let resultTextEl = document.querySelector("#question-text");
   // Display results to screen
   if (hasScore) {
@@ -177,7 +176,11 @@ let displayResults = function (hasScore) {
   createBeginButton();
 };
 
-let finishGame = function () {
+var displayHighScoreForm = function (score) {
+  // high score management
+};
+
+var finishGame = function () {
   // set current question to high number to prevent continuing quiz after losing
   currentQuestion = 9999;
   removeAllButtons();
@@ -196,9 +199,10 @@ let clickListener = document.querySelector("#answers");
 
 clickListener.addEventListener("click", function () {
   let idVals = event.target.id;
+
   if (idVals.includes("begin")) {
     beginQuiz();
-  } else {
+  } else if (idVals.includes("answer")) {
     evaluateAnswer(+idVals.replace(/\D+/g, ""));
   }
 });
