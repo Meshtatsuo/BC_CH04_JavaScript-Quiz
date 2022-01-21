@@ -46,6 +46,7 @@ const questionList = [
 
 var beginQuiz = function () {
   removeAllButtons();
+  replaceFeedbackText("");
   currentQuestion = 0;
   initalizeTimer(startingTime);
   createNextQuestion(currentQuestion);
@@ -104,6 +105,7 @@ var createAnswerButton = function (answer, index) {
   let newAnsBtnEl = document.createElement("button");
   // adds an ID of the corresponding index to the button. used
   // when checking for correct answer later
+  newAnsBtnEl.className = "answer-button";
   newAnsBtnEl.id = "answer " + index;
   newAnsBtnEl.textContent = answer;
   newAnsEl.appendChild(newAnsBtnEl);
@@ -118,7 +120,7 @@ var createBeginButton = function () {
   let newAnsBtnEl = document.createElement("button");
   // adds an ID of the corresponding index to the button. used
   // when checking for correct answer later
-  newAnsBtnEl.id = "answer begin";
+  newAnsBtnEl.id = "begin";
   newAnsBtnEl.textContent = "Play Again";
   newAnsEl.appendChild(newAnsBtnEl);
   listEl.appendChild(newAnsEl);
@@ -126,11 +128,9 @@ var createBeginButton = function () {
 
 var evaluateAnswer = function (ansIndex) {
   if (ansIndex === questionList[currentQuestion].correctAns) {
-    let response = document.querySelector("#feedback-text");
-    response.textContent = "Correct!";
+    replaceFeedbackText("Correct!");
   } else {
-    let response = document.querySelector("#feedback-text");
-    response.textContent = "Wrong!";
+    replaceFeedbackText("Wrong!");
     penalizePlayer();
   }
   if (currentQuestion >= questionList.length - 1) {
@@ -184,6 +184,7 @@ var finishGame = function () {
   // set current question to high number to prevent continuing quiz after losing
   currentQuestion = 9999;
   removeAllButtons();
+  replaceFeedbackText("");
   clearInterval(timerInterval);
   if (timer <= 0) {
     timer = 0;
@@ -194,15 +195,20 @@ var finishGame = function () {
   }
 };
 
+var replaceFeedbackText = function (textToReplace) {
+  let feedbackTxtEl = document.querySelector("#feedback-text");
+  feedbackTxtEl.textContent = textToReplace;
+};
+
 //Startup logic
 let clickListener = document.querySelector("#answers");
 
 clickListener.addEventListener("click", function () {
-  let idVals = event.target.id;
-
-  if (idVals.includes("begin")) {
+  let target = event.target;
+  console.log(target.id);
+  if (event.target.matches("#begin")) {
     beginQuiz();
-  } else if (idVals.includes("answer")) {
-    evaluateAnswer(+idVals.replace(/\D+/g, ""));
+  } else if (target.matches(".answer-button")) {
+    evaluateAnswer(+target.id.replace(/\D+/g, ""));
   }
 });
