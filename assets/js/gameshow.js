@@ -167,13 +167,13 @@ var displayResults = function (hasScore) {
     resultTextEl.textContent =
       "Congratulations on finishing! You finished with a score of " +
       score +
-      ". Click below to try again!";
+      ". Enter your name to store your score!";
   } else {
     resultTextEl.textContent =
       "Sorry, you ran out of time! Click below to try again!";
+
+    createBeginButton();
   }
-  // Create begin button
-  createBeginButton();
 };
 
 var displayHighScoreForm = function (score) {
@@ -191,6 +191,7 @@ var displayHighScoreForm = function (score) {
   formButton.setAttribute("type", "button");
   formButton.setAttribute("id", "submit-name");
   formButton.className = "answerButton";
+  formButton.textContent = "Submit Score";
 
   //append and display elements
   formEl.appendChild(textEntryEl);
@@ -209,6 +210,8 @@ var finishGame = function () {
     displayResults(false);
   } else {
     let score = computeResults();
+
+    displayHighScoreForm();
     displayResults(true);
   }
 };
