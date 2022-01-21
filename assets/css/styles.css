@@ -112,11 +112,15 @@ header a:hover {
 .answer-button {
   text-decoration: none;
   margin: 5px 0;
+  width: 80%;
 }
 
 .answer-button button {
   color: white;
-  font-size: 14px;
+  font-size: 16px;
+  width: 100%;
+  font-weight: bolder;
+  letter-spacing:
 }
 
 #feedback {
@@ -128,6 +132,27 @@ header a:hover {
 
 #feedback-text {
   padding-top: 25px;
+}
+
+.highScoreForm {
+  flex: 0 0 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+}
+
+.highScoreForm input {
+  flex: 0 0 100%;
+  height: 25px;
+  max-width: 60%;
+  margin: 2% auto;
+}
+
+.highScoreForm button {
+  margin: 0 auto;
+  max-width: 50%;
+  height: 50px;
 }
 
 /* Footer stylings */

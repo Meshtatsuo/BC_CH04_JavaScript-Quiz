@@ -177,7 +177,25 @@ var displayResults = function (hasScore) {
 };
 
 var displayHighScoreForm = function (score) {
-  // high score management
+  let containerEl = document.querySelector("#answers");
+  let formEl = document.createElement("form");
+  let textEntryEl = document.createElement("input");
+  let formButton = document.createElement("button");
+  // add attributes to formEl
+  formEl.className = "highScoreForm";
+  // add attributers to textEntryEl
+  textEntryEl.setAttribute("type", "text");
+  textEntryEl.setAttribute("id", "textForm");
+  textEntryEl.setAttribute("name", "name");
+  // add attributes to form button
+  formButton.setAttribute("type", "button");
+  formButton.setAttribute("id", "submit-name");
+  formButton.className = "answerButton";
+
+  //append and display elements
+  formEl.appendChild(textEntryEl);
+  formEl.appendChild(formButton);
+  containerEl.appendChild(formEl);
 };
 
 var finishGame = function () {
