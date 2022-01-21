@@ -5,6 +5,7 @@ var currentQuestion = 0;
 var timer = 0;
 const startingTime = 120;
 var score = 0;
+var highScores = [3, 5, 6, 1, 9, 15];
 // used to clear the timer interval
 var timerInterval;
 // question object contains question, all answers, and index of correct answer
@@ -111,7 +112,6 @@ var createAnswerButton = function (answer, index) {
   newAnsEl.appendChild(newAnsBtnEl);
   listEl.appendChild(newAnsEl);
 };
-
 var createBeginButton = function () {
   // Creates list item, button, and assigns appropriate class, ID,
   // and text content values for each button
@@ -167,11 +167,12 @@ var displayResults = function (hasScore) {
     resultTextEl.textContent =
       "Congratulations on finishing! You finished with a score of " +
       score +
-      ". Enter your name to store your score!";
+      ". Enter your name to save your score!";
+    displayHighScoreForm();
   } else {
     resultTextEl.textContent =
       "Sorry, you ran out of time! Click below to try again!";
-
+    // Create begin button
     createBeginButton();
   }
 };
@@ -210,8 +211,6 @@ var finishGame = function () {
     displayResults(false);
   } else {
     let score = computeResults();
-
-    displayHighScoreForm();
     displayResults(true);
   }
 };
@@ -221,15 +220,42 @@ var replaceFeedbackText = function (textToReplace) {
   feedbackTxtEl.textContent = textToReplace;
 };
 
+var loadScores = function () {
+  // load scores from local storage and store them in highScores array
+};
+
+var saveScores = function () {
+  // Save high score array to local storage
+  localStorage.setItem("High Scores", JSON.stringify(highScores));
+};
+
+var updateHighScores = function (newScore) {
+  // Sort array list so lowest score is in index 0
+  highScores.sort(function (a, b) {
+    return a - b;
+  });
+  // replace index 0 with new score
+  highScores[0] = newScore;
+  // re-sort list and reverse for displaying
+  highScores.sort(function (a, b) {
+    return a - b;
+  });
+  highScores.reverse();
+  console.log(highScores);
+};
+highScores.reverse();
+
 //Startup logic
 let clickListener = document.querySelector("#answers");
 
 clickListener.addEventListener("click", function () {
   let target = event.target;
-  console.log(target.id);
   if (event.target.matches("#begin")) {
     beginQuiz();
   } else if (target.matches(".answer-button")) {
     evaluateAnswer(+target.id.replace(/\D+/g, ""));
+  } else if (target.matches("#submit-name")) {
+    // Save high score to array and display high scores
+    console.log("Success");
   }
 });
