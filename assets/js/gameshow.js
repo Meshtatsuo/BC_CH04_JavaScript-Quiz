@@ -5,7 +5,27 @@ var currentQuestion = 0;
 var timer = 0;
 const startingTime = 120;
 var score = 0;
-var highScores = [3, 5, 6, 1, 9, 15];
+
+// leaderboard member object containing the name nad score
+var leaderBoardItem = {
+  name: "",
+  score: 0,
+};
+
+var leaderBoard = [
+  {
+    name: "joe",
+    score: 5,
+  },
+  {
+    name: "bob",
+    score: 33,
+  },
+  {
+    name: "frankie",
+    score: 341,
+  },
+];
 // used to clear the timer interval
 var timerInterval;
 // question object contains question, all answers, and index of correct answer
@@ -226,36 +246,93 @@ var loadScores = function () {
 
 var saveScores = function () {
   // Save high score array to local storage
-  localStorage.setItem("High Scores", JSON.stringify(highScores));
+  localStorage.setItem("High Scores", JSON.stringify(leaderBoard));
 };
 
-var updateHighScores = function (newScore) {
-  // Sort array list so lowest score is in index 0
-  highScores.sort(function (a, b) {
-    return a - b;
-  });
-  // replace index 0 with new score
-  highScores[0] = newScore;
-  // re-sort list and reverse for displaying
-  highScores.sort(function (a, b) {
-    return a - b;
-  });
-  highScores.reverse();
-  console.log(highScores);
+// add scores to a leaderboard. Not sorted
+var addToLeaderboard = function (inputName, playerScore) {
+  // If we have 10 names, replace the last one on the list
+  if (leaderBoard.length >= 10) {
+    leaderBoard[leaderBoard.length - 1] = {
+      name: inputName.toUpperCase,
+      score: playerScore,
+    };
+  }
+  // If not, just add to the bottom of the list
+  else {
+    leaderBoard.push({ name: inputName, score: playerScore });
+  }
+  saveScores();
 };
-highScores.reverse();
+
+var displayLeaderboard = function () {
+  // displays leaderboard to the screen
+  let container = document.querySelector("#answers");
+  let leaderBoardEl = document.createElement("ul");
+
+  // set attributes
+  leaderBoardEl.setAttribute("id", "answers leaderboard");
+
+  // add unordered list to screen to be populated with the loop
+  container.appendChild(leaderBoardEl);
+
+  // loop through the array of scores and display them
+  for (i = 0; i <= leaderBoard.length - 1; i++) {
+    let listItemEl = document.createElement("li");
+    let nameItemEl = document.createElement("h3");
+    let scoreItemEl = document.createElement("h3");
+
+    listItemEl.className = "answer-button";
+    listItemEl.setAttribute("id", "leaderBoardItem");
+    nameItemEl.setAttribute("id", "leaderBoardText");
+    nameItemEl.className = "leaderboardText";
+    scoreItemEl.setAttribute("id", "leaderBoardScore");
+    scoreItemEl.className = "leaderboardText";
+
+    nameItemEl.textContent = leaderBoard[i].name;
+    scoreItemEl.textContent = leaderBoard[i].score;
+
+    //add items to screen
+    listItemEl.appendChild(nameItemEl);
+    listItemEl.appendChild(scoreItemEl);
+    leaderBoardEl.appendChild(listItemEl);
+  }
+
+  //update text and generate "new game" button
+  var text = document.querySelector("#question-text");
+  text.textContent = "High Scores";
+  createBeginButton();
+
+  // remove high score submission form
+  let form = document.querySelector(".highScoreForm");
+  form.remove();
+};
 
 //Startup logic
-let clickListener = document.querySelector("#answers");
+let btnClickListener = document.querySelector("#answers");
 
-clickListener.addEventListener("click", function () {
+let highScoreListener = document.querySelector(".high-scores");
+
+btnClickListener.addEventListener("click", function () {
   let target = event.target;
   if (event.target.matches("#begin")) {
+    if (document.querySelector("ul")) {
+      // remove leaderboard if currently displaying
+      let leaderboardEl = document.querySelector("ol");
+      leaderboardEl.removeChild(document.querySelector("ul"));
+    }
     beginQuiz();
   } else if (target.matches(".answer-button")) {
     evaluateAnswer(+target.id.replace(/\D+/g, ""));
   } else if (target.matches("#submit-name")) {
     // Save high score to array and display high scores
-    console.log("Success");
+    addToLeaderboard(document.getElementById("textForm").value, score);
+    removeAllButtons();
+    displayLeaderboard();
   }
+});
+
+highScoreListener.addEventListener("click", function () {
+  removeAllButtons();
+  displayLeaderboard();
 });

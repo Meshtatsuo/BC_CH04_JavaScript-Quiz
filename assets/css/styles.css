@@ -16,6 +16,15 @@ section {
   flex: 1 1 100%;
 }
 
+.leaderboardText {
+  width: 49%;
+  font-family: "Kumbh Sans", sans-serif;
+  font-family: "Open Sans", sans-serif;
+  font-family: "Quattrocento", serif;
+  font-weight: bolder;
+  font-size: 18px;
+}
+
 /* Header stylings */
 header {
   padding: 1% 0;
@@ -163,6 +172,31 @@ header a:hover {
   margin: 0 auto;
   max-width: 50%;
   height: 50px;
+}
+
+ul {
+  width: 100%;
+}
+ul li:nth-child(odd) {
+  background-color: rgb(21, 11, 46, 0.2);
+}
+
+#leaderBoardItem {
+  flex: 1 1 100%;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#leaderBoardText {
+  text-align: left;
+  flex: 1 1 50;
+  width: 49%;
+}
+
+#leaderBoardScore {
+  text-align: right;
+  border-left: 3px solid #351c75;
 }
 
 /* Footer stylings */
