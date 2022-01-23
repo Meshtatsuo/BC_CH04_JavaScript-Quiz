@@ -5,6 +5,7 @@ var currentQuestion = 0;
 var timer = 0;
 const startingTime = 120;
 var score = 0;
+var leaderBoardShown = false;
 
 // leaderBoard member object containing the name nad score
 var leaderBoardItem = {
@@ -95,6 +96,9 @@ const questionList = [
 // FUNCTIONS
 
 var beginQuiz = function () {
+  // Since the only way to close the leaderboard screen is to start
+  // a new game, we will set leaderBoardShown back to false here
+  leaderBoardShown = false;
   removeAllButtons();
   replaceFeedbackText("");
   currentQuestion = 0;
@@ -413,6 +417,13 @@ btnClickListener.addEventListener("click", function () {
 let highScoreListener = document.querySelector(".high-scores");
 
 highScoreListener.addEventListener("click", function () {
-  removeAllButtons();
-  displayleaderBoard(false);
+  // If leaderboard is not on screen, display it, otherwise ignore event
+  if (!leaderBoardShown) {
+    clearInterval(timerInterval);
+    removeAllButtons();
+    displayleaderBoard(false);
+    leaderBoardShown = true;
+  } else {
+    //nothing
+  }
 });
