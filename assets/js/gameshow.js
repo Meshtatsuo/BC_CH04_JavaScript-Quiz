@@ -1,4 +1,4 @@
-// Global variable
+// Global variables
 const listEl = document.querySelector("#answers");
 
 var currentQuestion = 0;
@@ -6,26 +6,13 @@ var timer = 0;
 const startingTime = 120;
 var score = 0;
 
-// leaderboard member object containing the name nad score
+// leaderBoard member object containing the name nad score
 var leaderBoardItem = {
   name: "",
   score: 0,
 };
 
-var leaderBoard = [
-  {
-    name: "joe",
-    score: 5,
-  },
-  {
-    name: "bob",
-    score: 33,
-  },
-  {
-    name: "frankie",
-    score: 341,
-  },
-];
+var leaderBoard = [];
 // used to clear the timer interval
 var timerInterval;
 // question object contains question, all answers, and index of correct answer
@@ -61,6 +48,48 @@ const questionList = [
     qAns4: "var myFunction() { console.log('hello') };",
     correctAns: 1,
   },
+  {
+    // Q3
+    qText:
+      "Which of the following is the incorrect way to declare a variable in JavaScript?",
+    qAns1: "let promptUser = function() {};",
+    qAns2: "int myNumber = 15;",
+    qAns3: "const pi = 3.14159;",
+    qAns4: "var myCollection = [];",
+    correctAns: 2,
+  },
+  {
+    // Q4
+    qText: "What does console.log('Hello World!') do?",
+    qAns1: "Prints 'Hello World!' to the viewport",
+    qAns2: "Saves 'Hello World!' to a log file in local storage.",
+    qAns3: "Prints 'Hello World!' to the developer tools console.",
+    qAns4: "All of the Above",
+    correctAns: 3,
+  },
+  {
+    // Q5
+    qText: "What does Document.querySelector do?",
+    qAns1:
+      "Attaches an event listener to an element in the DOM that matches the specified selector",
+    qAns2:
+      "Returns the first element within the document that matches the specified selector.",
+    qAns3: "Creates a new element that matches the specified selector.",
+    qAns4:
+      "Adds a new element that matches the specified selector and adds it to the DOM.",
+    correctAns: 2,
+  },
+  {
+    // Q6
+    qText: "What is the Document Object Model?",
+    qAns1: "The index.html file in a website's root directory",
+    qAns2:
+      "The method a web browser uses to apply stylings to an HTML document",
+    qAns3:
+      "A generated version of the HTML script that can be read and used by JavaScript",
+    qAns4: "All of the above",
+    correctAns: 3,
+  },
 ];
 
 // FUNCTIONS
@@ -81,6 +110,8 @@ var initalizeTimer = function (startingTime) {
 };
 
 var updateTimer = function () {
+  // Called along with an interval so it triggers once every second
+  // decrements timer by 1 and finishes game if timer reaches 0
   timer -= 1;
   let timerEl = document.querySelector("#timer");
   if (timer <= 0) {
@@ -95,7 +126,6 @@ var updateTimer = function () {
 var removeAllButtons = function () {
   // Remove all buttons from ordered list
   while (document.querySelector(".answer-button")) {
-    let listEl = document.querySelector("#answers");
     let listItemEl = document.querySelector(".answer-button");
     listEl.removeChild(listItemEl);
   }
@@ -147,6 +177,10 @@ var createBeginButton = function () {
 };
 
 var evaluateAnswer = function (ansIndex) {
+  // Checks answer index and compare it to the index associated by
+  // the clicked button's id attribute.
+  // If correct, updates feedback text and moves on to next question
+  // If incorrect, applies penalty, updates feedback text, and moves on to next question
   if (ansIndex === questionList[currentQuestion].correctAns) {
     replaceFeedbackText("Correct!");
   } else {
@@ -164,6 +198,7 @@ var evaluateAnswer = function (ansIndex) {
 };
 
 var penalizePlayer = function () {
+  // Docks the player's timer (and as a result their score) by the penalty amount
   timer += answerPenalty;
   let timerTextEl = document.querySelector("#timer");
   timerTextEl.textContent = timer;
@@ -175,17 +210,20 @@ var penalizePlayer = function () {
 };
 
 var computeResults = function () {
-  // calculate results
+  // Some very intense calculations to determine the player's score
   score = timer;
   return score;
 };
 
 var displayResults = function (hasScore) {
+  // Displays the results to the player
+  // Only displays the form to submit high score if player has a score
+  // to submit, otherwise displays the play button
   let resultTextEl = document.querySelector("#question-text");
   // Display results to screen
   if (hasScore) {
     resultTextEl.textContent =
-      "Congratulations on finishing! You finished with a score of " +
+      "You finished with a score of " +
       score +
       ". Enter your name to save your score!";
     displayHighScoreForm();
@@ -198,7 +236,9 @@ var displayResults = function (hasScore) {
 };
 
 var displayHighScoreForm = function (score) {
-  let containerEl = document.querySelector("#answers");
+  // Creates elements and generates the high score form,
+  // then adds it to the screen item by item
+  let containerEl = listEl;
   let formEl = document.createElement("form");
   let textEntryEl = document.createElement("input");
   let formButton = document.createElement("button");
@@ -221,6 +261,7 @@ var displayHighScoreForm = function (score) {
 };
 
 var finishGame = function () {
+  // Finishes the game and computes then displays results to the
   // set current question to high number to prevent continuing quiz after losing
   currentQuestion = 9999;
   removeAllButtons();
@@ -236,12 +277,19 @@ var finishGame = function () {
 };
 
 var replaceFeedbackText = function (textToReplace) {
+  // Updates the feedback text
   let feedbackTxtEl = document.querySelector("#feedback-text");
   feedbackTxtEl.textContent = textToReplace;
 };
 
 var loadScores = function () {
   // load scores from local storage and store them in highScores array
+  let loadedScores = localStorage.getItem("High Scores");
+  if (loadedScores) {
+    leaderBoard = JSON.parse(loadedScores);
+  } else {
+    return false;
+  }
 };
 
 var saveScores = function () {
@@ -249,14 +297,32 @@ var saveScores = function () {
   localStorage.setItem("High Scores", JSON.stringify(leaderBoard));
 };
 
-// add scores to a leaderboard. Not sorted
-var addToLeaderboard = function (inputName, playerScore) {
+// add scores to a leaderBoard. Not sorted
+var addToleaderBoard = function (inputName, playerScore) {
   // If we have 10 names, replace the last one on the list
   if (leaderBoard.length >= 10) {
-    leaderBoard[leaderBoard.length - 1] = {
-      name: inputName.toUpperCase,
-      score: playerScore,
-    };
+    // Find score in leaderBoard just beneath player score
+    for (i = 0; i <= leaderBoard.length - 1; i++) {
+      let lastIndexSmaller = true;
+      if (playerScore > leaderBoard[i].score) {
+        lastIndexSmaller = true;
+      } else if (playerScore <= leaderBoard[i].score) {
+        // if previous check was greater than, splice player's name and score into that last checked index
+        // and remove the last index of leaderBoard array to bring total length back to 10
+        if ((lastIndexSmaller = true)) {
+          leaderBoard.splice(1, 0, { name: inputName, score: playerScore });
+          console.log(leaderBoard);
+          //remove last index of array
+          leaderBoard.splice(leaderBoard.length - 1, 1);
+          console.log(leaderBoard);
+          return true;
+        } else {
+          // in this instance something went terribly wrong. log for testing but just add new score
+          // to first index (after sort this will be the lowest score) of array.
+          leaderBoard[0] = { name: inputName, score: playerScore };
+        }
+      }
+    }
   }
   // If not, just add to the bottom of the list
   else {
@@ -265,16 +331,21 @@ var addToLeaderboard = function (inputName, playerScore) {
   saveScores();
 };
 
-var displayLeaderboard = function () {
-  // displays leaderboard to the screen
-  let container = document.querySelector("#answers");
+var displayleaderBoard = function (submittedScore) {
+  // displays leaderBoard to the screen
+  let container = listEl;
   let leaderBoardEl = document.createElement("ul");
 
   // set attributes
-  leaderBoardEl.setAttribute("id", "answers leaderboard");
+  leaderBoardEl.setAttribute("id", "answers leaderBoard");
 
   // add unordered list to screen to be populated with the loop
   container.appendChild(leaderBoardEl);
+
+  // I wanted to properly sort all the high scores by value so
+  // the leaderboard was sorted properly, but having the property
+  // stored as a key value in an object made sorting it much
+  // more difficult and I ran out of time. V2 maybe!
 
   // loop through the array of scores and display them
   for (i = 0; i <= leaderBoard.length - 1; i++) {
@@ -285,9 +356,9 @@ var displayLeaderboard = function () {
     listItemEl.className = "answer-button";
     listItemEl.setAttribute("id", "leaderBoardItem");
     nameItemEl.setAttribute("id", "leaderBoardText");
-    nameItemEl.className = "leaderboardText";
+    nameItemEl.className = "leaderBoardText";
     scoreItemEl.setAttribute("id", "leaderBoardScore");
-    scoreItemEl.className = "leaderboardText";
+    scoreItemEl.className = "leaderBoardText";
 
     nameItemEl.textContent = leaderBoard[i].name;
     scoreItemEl.textContent = leaderBoard[i].score;
@@ -305,34 +376,43 @@ var displayLeaderboard = function () {
 
   // remove high score submission form
   let form = document.querySelector(".highScoreForm");
-  form.remove();
+  if (submittedScore) {
+    form.remove();
+  }
 };
 
 //Startup logic
-let btnClickListener = document.querySelector("#answers");
 
-let highScoreListener = document.querySelector(".high-scores");
+//Load any scores saved to local storage
+loadScores();
+
+// create and add event listener to answers ID elements
+let btnClickListener = listEl;
 
 btnClickListener.addEventListener("click", function () {
   let target = event.target;
   if (event.target.matches("#begin")) {
     if (document.querySelector("ul")) {
-      // remove leaderboard if currently displaying
-      let leaderboardEl = document.querySelector("ol");
-      leaderboardEl.removeChild(document.querySelector("ul"));
+      // remove leaderBoard if currently displaying
+      let leaderBoardEl = document.querySelector("ol");
+      leaderBoardEl.removeChild(document.querySelector("ul"));
     }
     beginQuiz();
   } else if (target.matches(".answer-button")) {
     evaluateAnswer(+target.id.replace(/\D+/g, ""));
   } else if (target.matches("#submit-name")) {
     // Save high score to array and display high scores
-    addToLeaderboard(document.getElementById("textForm").value, score);
+    addToleaderBoard(document.getElementById("textForm").value, score);
+    saveScores();
     removeAllButtons();
-    displayLeaderboard();
+    displayleaderBoard(true);
   }
 });
 
+// create and add event lister for "view high scores" element
+let highScoreListener = document.querySelector(".high-scores");
+
 highScoreListener.addEventListener("click", function () {
   removeAllButtons();
-  displayLeaderboard();
+  displayleaderBoard(false);
 });
